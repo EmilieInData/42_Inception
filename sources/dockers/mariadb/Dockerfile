@@ -2,21 +2,25 @@
 FROM debian:bullseye
 
 #install all dependencies
-RUN apt update && apt upgrade && apt install -y \ mariadb-server \ mariadb-client 
+RUN apt update && apt upgrade && apt install -y mariadb-server 
 
 #copy files & repertories
-COPY ./mariadb/conf/configuration_file.conf # + ajouter adresse destination
+COPY ./mariadb/conf/configuration_file.cnf /etc/mysql/mariadb.conf.d/configuration_file.cnf
 
-COPY #+ fichier init
+COPY --chmod=700 ./tools/init.sh /root
 
-RUN #+ ce que dois faire mariadb
+#execute the cmd in the image during built process, prepare space to keep files
+RUN mkdir -p /run/mysqld && \
+    chown mysql:mysql /run/mysqld && \
+    chmod 777 /run/mysqld
+#test with 750, more safe
 
 #port number for container's listening
 EXPOSE 3306
 
 #container's entrypoint
-ENTRYPOINT #+info
+ENTRYPOINT ["/root/init.sh"]
 
 #define arguments & commands
-#CMD["mariadb"]
-CMD["mysqld"]
+CMD ["mariadb"]
+

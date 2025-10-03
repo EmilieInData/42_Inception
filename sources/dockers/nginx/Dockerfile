@@ -4,21 +4,25 @@ FROM debian:bullseye
 #install all dependencies
 # '-y'=  without confirmation
 # '--no-install-recommends nginx openssl' = to install just necessary paquets to avoid use more memory 
-RUN apt update && apt upgrade && apt install -y \ nginx
+RUN apt update && apt upgrade && apt install -y nginx
 
 #copy files & repertories
-COPY ./nginx/conf/configuration_file.conf
+COPY ./nginx/conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
+
+#copy initialisation file in the container
+COPY --chmod=700 ./nginx/tools/init.sh /root/
+
+RUN 
 
 #port number for container's listening
 EXPOSE 443
 
 #modify actual repertory (next cmd will use this new repertory)
-WORKDIR 
+#WORKDIR 
 
 #container's entrypoint
-ENTRYPOINT
+ENTRYPOINT ["root/init.sh"]
 
 #define arguments & commands
 #daemon off = nginx is in the first plan
 CMD["nginx", "-g", "daemon off;"]
-
