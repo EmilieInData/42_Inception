@@ -1,0 +1,11 @@
+services:
+  nginx:
+    build: dockers/nginx/.
+    container_name: nginx
+    ports:
+      - "80:80"
+  wordpress:
+    build: dockers/wordpress/.
+    container_name: wordpress-php
+    ports:
+      - "8080:80"
