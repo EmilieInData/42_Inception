@@ -6,6 +6,8 @@ RUN apt update && \
 	apt clean && \
         rm -rf /var/lib/apt/lists/*
 
+COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
+
 WORKDIR /var/www/html
 
 CMD ["php-fpm7.4", "-F"]

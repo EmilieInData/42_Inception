@@ -10,7 +10,7 @@ RUN apt update && \
 	rm -rf /var/lib/apt/lists/*
 
 #copy files & repertories
-#COPY conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
+COPY conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
 
 # #copy initialisation file in the container
 # COPY --chmod=700 ./nginx/tools/init.sh /root/
