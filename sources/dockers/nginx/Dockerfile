@@ -15,10 +15,10 @@ COPY conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
 # #copy initialisation file in the container
 # COPY --chmod=700 ./nginx/tools/init.sh /root/
 
-# RUN 
+RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 
 # #port number for container's listening
-# EXPOSE 443
+EXPOSE 443
 
 # #modify actual repertory (next cmd will use this new repertory)
 # #WORKDIR 
