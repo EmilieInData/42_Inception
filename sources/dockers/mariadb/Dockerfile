@@ -2,12 +2,16 @@
 FROM debian:bullseye
 
 #install all dependencies
-RUN apt update && apt upgrade && apt install -y mariadb-server 
+RUN apt update && \
+	apt install -y mariadb-server && \
+   	apt clean && \
+        rm -rf /var/lib/apt/lists/*
 
 #copy files & repertories
-COPY ./mariadb/conf/configuration_file.cnf /etc/mysql/mariadb.conf.d/configuration_file.cnf
+COPY /conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY --chmod=700 ./tools/init.sh /root
+#COPY --chmod=700 ./tools/init.sh /root
+COPY /tools/init.sql /etc/mysql/init.sql
 
 #execute the cmd in the image during built process, prepare space to keep files
 RUN mkdir -p /run/mysqld && \
@@ -19,8 +23,8 @@ RUN mkdir -p /run/mysqld && \
 EXPOSE 3306
 
 #container's entrypoint
-ENTRYPOINT ["/root/init.sh"]
+#ENTRYPOINT ["/root/init.sh"]
 
 #define arguments & commands
-CMD ["mariadb"]
-
+#CMD ["mariadb"]
+CMD ["mysqld"]

@@ -17,11 +17,14 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ~data/db_nginx:/var/www/html
+      - ~data:/var/www/html
   wordpress:
     build: dockers/wordpress/.
     container_name: wordpress-php
     expose:
       - "9000"
     volumes:
-      - ~data/db_wordpress:/var/www/html
+      - ~data:/var/www/html
+  mariadb:
+    build: dockers/mariadb/.
+    container_name: mariadb
