@@ -17,11 +17,11 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./web:/var/www/html
+      - ~data/db_nginx:/var/www/html
   wordpress:
     build: dockers/wordpress/.
     container_name: wordpress-php
     expose:
       - "9000"
     volumes:
-      - ./web:/var/www/html
+      - ~data/db_wordpress:/var/www/html
