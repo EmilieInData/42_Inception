@@ -1,12 +1,9 @@
 all:
-	mkdir -p $(HOME)/inception_data
-	mkdir -p $(HOME)/inception_data/web
-	mkdir -p $(HOME)/inception_data/web/ssl
-	mkdir -p $(HOME)/inception_data/data
+	mkdir -p ~/data
+	mkdir -p ~/data/web
+	mkdir -p ~/data/web/ssl
+	mkdir -p ~/data/database
 	docker compose -p "" -f ./sources/docker-compose.yml up --build -d
-
-copy: 
-	#copier le env automatiquement
 
 up:
 	docker compose -p "" -f ./sources/docker-compose.yml up -d
@@ -20,10 +17,10 @@ clean:
 fclean: clean
 	docker container prune
 	docker system prune -a --volumes
-	sudo rm -rf $(HOME)/inception_data
+	sudo rm -rf ~/data
 
 re: fclean all
 
-.phony: all copy up down clean fclean re
+.phony: all up down clean fclean re
 
 

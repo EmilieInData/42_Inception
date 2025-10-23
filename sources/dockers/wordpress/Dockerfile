@@ -8,11 +8,11 @@ RUN apt update && \
 
 COPY conf/www.conf /etc/php/7.4/fpm/pool.d/.
 
-COPY tools/script.sh /root/script.sh
+COPY tools/script.sh /tools/script.sh
 
-RUN chmod +x /root/script.sh
+RUN chmod +x /tools/script.sh
 
 EXPOSE 9000
 
-ENTRYPOINT ["/root/script.sh"]
-CMD ["php-fpm7.4", "-F"]
+ENTRYPOINT ["/tools/script.sh"]
+#CMD ["php-fpm7.4", "-F"]

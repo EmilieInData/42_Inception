@@ -5,46 +5,53 @@ services:
     ports:
       - "443:443"
     volumes:
-      - $HOME/inception_data/web:/var/www/html
-      - $HOME/inception_data/web/ssl:/var/www/html/ssl
+      - web:/var/www/html
     depends_on:
       - wordpress
       - mariadb
     networks:
       - docker_network
+    restart: always
+    env_file: .env
+      
   wordpress:
     build: dockers/wordpress/.
     container_name: wordpress-php
     expose:
       - "9000"
     volumes:
-      - $HOME/inception_data/web:/var/www/html
+      - web:/var/www/html
     depends_on:
       - mariadb
     networks:
       - docker_network
+    restart: always
+    env_file: .env
+
   mariadb:
     build: dockers/mariadb/.
     container_name: mariadb
     volumes:
-      - $HOME/inception_data/data:/var/lib/mysql
+      - database:/var/lib/mysql
     networks:
       - docker_network
+    restart: always
+    env_file: .env
 
 networks:
   docker_network:
     driver: bridge
 
 volumes:
-  data:
+  database:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: $HOME/inception_data/data
+      device: ${VOLUMES_PATH}/database
   web:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: $HOME/inception_data/web
+      device: ${VOLUMES_PATH}/web
