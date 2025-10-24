@@ -1,7 +1,6 @@
 all:
 	mkdir -p ~/data
 	mkdir -p ~/data/web
-	mkdir -p ~/data/web/ssl
 	mkdir -p ~/data/database
 	docker compose -p "" -f ./sources/docker-compose.yml up --build -d
 

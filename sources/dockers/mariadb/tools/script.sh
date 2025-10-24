@@ -1,12 +1,12 @@
+#!/bin/bash
 # --> shebang = script need to be execute with bash 
-#! /bin/bash
 
 # --> start temporarily the server to init SQL commands
-initialize_service()
-{
-	service mariadb start
-	sleep 1
-}
+#initialize_service()
+
+#	service mariadb start
+#	sleep 1
+#}
 
 # --> apply good securities practices
 initialize_securities()
@@ -31,15 +31,16 @@ initialize_database()
 {
 	mariadb -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
 	mariadb -e "CREATE USER IF NOT EXISTS '$DB_USER_NAME'@'%' IDENTIFIED BY '$DB_USER_PASSWORD';"
-	mariadb -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER_NAME'@'%';"
+	#mariadb -e "GRANT ALL ON $DB_NAME.* TO '$DB_USER_NAME'@'%';"
+	mariadb -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER_NAME'@'%' WITH GRANT OPTION;"
 	mariadb -e "FLUSH PRIVILEGES;"
 }
 
 # --> stop the configuration server
-initialize_service
+#initialize_service
 initialize_securities
 initialize_database
-service mariadb stop
+#service mariadb stop
 
 # --> execute final CMD (from Dockerfile)
 exec "$@"

@@ -13,4 +13,7 @@ else
 fi
 
 echo "Starting nginx..."
-nginx -g "daemon off;"
+
+exec "$@"
+
+#nginx -g "daemon off;"

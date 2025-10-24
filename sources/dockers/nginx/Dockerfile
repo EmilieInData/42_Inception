@@ -4,13 +4,12 @@ FROM debian:bullseye
 #install all dependencies
 # '-y'=  without confirmation
 # '--no-install-recommends nginx openssl' = to install just necessary paquets to avoid use more memory 
-RUN apt update && \
-    apt install -y nginx && \
-    apt clean && \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends nginx openssl && \
     rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-    apt-get install -y openssl
+#RUN apt-get update && \
+#    apt-get install -y openssl
 
 #copy files & repertories
 COPY conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
@@ -29,4 +28,4 @@ ENTRYPOINT ["tools/init.sh"]
 
 #define arguments & commands
 #daemon off = nginx is in the first plan
-#CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
