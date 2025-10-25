@@ -1,44 +1,4 @@
 services:
-  nginx:
-    build: dockers/nginx
-    container_name: nginx
-    ports:
-      - "443:443"
-    volumes:
-      - web:/var/www/html
-    depends_on:
-      - wordpress
-    networks:
-      - docker_network
-    restart: always
-    env_file: .env
-      #healthcheck:
-      #test: ["CMD", "nc", "-z", "localhost", "443"]
-      #interval: 10s
-      #timeout: 5s
-      #retries: 5
-  
-  wordpress:
-    build: dockers/wordpress
-    container_name: wordpress-php
-    expose:
-      - "9000"
-    volumes:
-      - web:/var/www/html
-    depends_on:
-      mariadb:
-        condition: service_healthy
-    networks:
-      - docker_network
-    restart: always
-    env_file: .env
-      #healthcheck:
-      #test: ["CMD", "nc", "-z", "localhost", "9000"]
-      #interval: 10s
-      #timeout: 5s
-      #retries: 5
-
-
   mariadb:
     build: dockers/mariadb
     container_name: mariadb
@@ -53,6 +13,35 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
+ 
+  wordpress:
+    build: dockers/wordpress
+    container_name: wordpress-php
+    expose:
+      - "9000"
+    volumes:
+      - web:/var/www/html
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - docker_network
+    restart: always
+    env_file: .env
+
+  nginx:
+    build: dockers/nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - web:/var/www/html
+    depends_on:
+      - wordpress
+    networks:
+      - docker_network
+    restart: always
+    env_file: .env
 
 networks:
   docker_network:
