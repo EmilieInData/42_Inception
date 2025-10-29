@@ -1,16 +1,25 @@
 #!/bin/bash
 # --> shebang = script need to be execute with bash 
 
+rm -f /var/lib/mysql/aria_log_control
+rm -f /var/lib/mysql/*.pid
+rm -f /var/lib/mysql/*.sock
+chown -R mysql:mysql /var/lib/mysql
+
 # --> start temporarily the server to init SQL commands
 initialize_service()
 {
-	service mariadb start
-	sleep 1
-	mariadb -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}'; FLUSH PRIVILEGES;"
+    #start MariaDB without password for initialisation
+    mysqld_safe --skip-networking --skip-grant-tables &
+    sleep 5
+    mariadb -u root -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}'; FLUSH PRIVILEGES;"
+    # stop temporary server
+    mysqladmin -u root -p"${DB_ROOT_PASSWORD}" shutdown
+    #normal program start to make user changes
+    service mariadb start
 }
 
 # --> apply good securities practices
-# --> mariadb -e = program + execute, execute this command
 initialize_securities()
 {
     # --> remove anonymous users

@@ -8,19 +8,14 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends nginx openssl && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN apt-get update && \
-#    apt-get install -y openssl
-
 #copy files & repertories
 COPY conf/configuration_file.conf /etc/nginx/conf.d/configuration_file.conf
 
-# #copy initialisation file in the container
+#copy initialisation file in the container
 COPY tools/init.sh /tools/init.sh
 RUN chmod +x /tools/init.sh
 
-#RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
-
-# #port number for container's listening
+#port number for container's listening
 EXPOSE 443
 
 #container's entrypoint
